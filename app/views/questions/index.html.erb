@@ -4,12 +4,14 @@
   <tr>
     <th>Title</th>
     <th>Body</th>
+    <th>Answer</th>
   </tr>
 
 <% @questions.each do |question| %>
   <tr>
     <td><%=h question.title %></td>
     <td><%=h question.body %></td>
+    <td><%=h question.answer %></td>
     <td><%= link_to 'Show', question %></td>
     <td><%= link_to 'Edit', edit_question_path(question) %></td>
     <td><%= link_to 'Destroy', question, :confirm => 'Are you sure?', :method => :delete %></td>

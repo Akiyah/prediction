@@ -8,6 +8,27 @@
   <%=h @question.body %>
 </p>
 
+<p>
+  <table>
+  <caption>Answer</caption>
+  <tbody>
+    <tr>
+     <th>button</th>
+     <th>title</th>
+    </tr>
+    <% @question.answer.split.each do |answer| %>
+      <tr>
+       <td>
+         <button>up</button>
+         <button>down</button>
+       </td>
+       <td><%=h answer %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  </table>
+</p>
+
 
 <%= link_to 'Edit', edit_question_path(@question) %> |
 <%= link_to 'Back', questions_path %>

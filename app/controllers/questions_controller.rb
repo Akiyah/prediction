@@ -41,7 +41,6 @@ class QuestionsController < ApplicationController
   # POST /questions
   def create
     @question = Question.new(params[:question])
-    @question.answers = []
 
     if @question.save
       flash[:notice] = 'Question was successfully created.'
@@ -55,16 +54,7 @@ class QuestionsController < ApplicationController
   def update
     @question = Question.find(params[:id])
 
-    p "params[:question]"
-    p params[:question]
-
-    @question.title = params[:question][:title]
-    @question.body = params[:question][:body]
-    #@question.answers
-    params[:question][:answers].split.each do |answer_title|
-      @question.answers << Answer.new({:title=>answer_title, :question=> @question})
-    end
-    @question.save
+    @question.update_attributes(params[:question])
     
     redirect_to(@question)
   end
