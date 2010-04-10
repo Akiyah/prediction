@@ -20,3 +20,7 @@
 <br />
 
 <%= link_to 'New question', new_question_path %>
+
+<% if @user %>
+@user.login:<%= @user.login %>
+<% end %>

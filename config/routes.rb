@@ -1,8 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :bets
-
-  map.resources :answers
-
   map.resources :questions
 
   map.resource :account, :controller => "users"

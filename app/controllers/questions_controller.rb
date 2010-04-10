@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
   # GET /questions.xml
   def index
     @questions = Question.all
+    @user = current_user
 
     respond_to do |format|
       format.html # index.html.erb
@@ -38,37 +39,34 @@ class QuestionsController < ApplicationController
   end
 
   # POST /questions
-  # POST /questions.xml
   def create
     @question = Question.new(params[:question])
+    @question.answers = []
 
-    respond_to do |format|
-      if @question.save
-        flash[:notice] = 'Question was successfully created.'
-        format.html { redirect_to(@question) }
-        format.xml  { render :xml => @question, :status => :created, :location => @question }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @question.errors, :status => :unprocessable_entity }
-      end
+    if @question.save
+      flash[:notice] = 'Question was successfully created.'
+      redirect_to(@question)
+    else
+      render :action => "new"
     end
   end
 
   # PUT /questions/1
-  # PUT /questions/1.xml
   def update
     @question = Question.find(params[:id])
 
-    respond_to do |format|
-      if @question.update_attributes(params[:question])
-        flash[:notice] = 'Question was successfully updated.'
-        format.html { redirect_to(@question) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @question.errors, :status => :unprocessable_entity }
-      end
+    p "params[:question]"
+    p params[:question]
+
+    @question.title = params[:question][:title]
+    @question.body = params[:question][:body]
+    #@question.answers
+    params[:question][:answers].split.each do |answer_title|
+      @question.answers << Answer.new({:title=>answer_title, :question=> @question})
     end
+    @question.save
+    
+    redirect_to(@question)
   end
 
   # DELETE /questions/1
