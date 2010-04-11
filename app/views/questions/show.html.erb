@@ -8,26 +8,68 @@
   <%=h @question.body %>
 </p>
 
-<p>
+<% if @user %>
+ <% form_for(@question, :url=>{:action => 'change_bet'}) do |f| %>
   <table>
+   <caption>Answer</caption>
+   <tbody>
+    <tr>
+     <th>no</th><th>point</th><th>title</th>
+    </tr>
+    <% @question.answer.split.each_with_index do |answer, index| %>
+     <tr>
+      <td>
+       <label>
+        <input type="radio" name="answer_index" value="<%= index %>"
+         <% if @bet %>
+          disabled
+          <% if index == @bet.answer_index %>
+           checked="checked"
+          <% end %>
+         <% end %>
+        /><%= index %>
+       </label>
+      </td>
+      <td>
+       <% if @bet %>
+        <% if index == @bet.answer_index %>
+         <%= @bet.point %>
+        <% end %>
+       <% end %>
+      </td>
+      <td><%=h answer %></td>
+     </tr>
+    <% end %>
+   </tbody>
+  </table>
+  <% if !@bet %>
+   <input type="text" name="bet_point"  />
+  <% end %>
+  <br/>
+  <%= f.submit(@bet ? "払い戻す" : "購入する"  ) %>
+ <% end %>
+
+<% else %>
+
+ <table>
   <caption>Answer</caption>
   <tbody>
+   <tr>
+    <th>no</th><th>point</th><th>title</th>
+   </tr>
+   <% @question.answer.split.each_with_index do |answer, index| %>
     <tr>
-     <th>button</th>
-     <th>title</th>
+     <td><%= index %></td>
+     <td></td>
+     <td><%=h answer %></td>
     </tr>
-    <% @question.answer.split.each do |answer| %>
-      <tr>
-       <td>
-         <button>up</button>
-         <button>down</button>
-       </td>
-       <td><%=h answer %></td>
-      </tr>
-    <% end %>
+   <% end %>
   </tbody>
-  </table>
-</p>
+ </table>
+
+<% end %>
+
+
 
 
 <%= link_to 'Edit', edit_question_path(@question) %> |
